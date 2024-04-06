@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import dominando.android.recyclerviewcap.adapters.MessageAdapter
 import dominando.android.recyclerviewcap.model.Message
 
@@ -17,6 +18,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initRecyclerView()
+
+        val addButton = findViewById<FloatingActionButton>(R.id.floatingActionButtonAdd)
+        addButton.setOnClickListener {
+            addMessage()
+        }
     }
 
     private fun onMessageItemClick(message: Message) {
@@ -35,5 +42,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
         rv.layoutManager = layoutManager
+    }
+
+    private fun addMessage() {
+        val editTitle:TextInputEditText = findViewById(R.id.editTextEditTitle)
+        val editText:TextInputEditText = findViewById(R.id.editTextEditText)
+
+        val message = Message(editTitle.toString(),
+                              editText.toString())
+
+        messages.add(message)
+        adapter.notifyItemInserted(messages.lastIndex)
+
+        editTitle.text?.clear()
+        editText.text?.clear()
+        editTitle.requestFocus()
+
     }
 }
